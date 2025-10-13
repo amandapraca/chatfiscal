@@ -1,0 +1,10 @@
+No arquivo app.py, com o código está extenso, cada função foi separada por partes, para facilitar nas correções:
+
+• 🧩 PARTE 1 — Imports, sessão e estrutura base
+•	🧩 PARTE 2 — Funções auxiliares
+•	🧩 PARTE 3 — Simulação de dados fiscais fictícios
+•	🧩 PARTE 4 — Upload de Arquivos e Perguntas ao Agente
+•	🧩 PARTE 5 — Auditoria Fiscal
+•	🧩 PARTE 6 — Visualizações gráficas com filtros
+•	🧩 PARTE 7 — Painel Fiscal Inteligente
+•	🧩 PARTE 8 — Histórico de Perguntas e Resposta

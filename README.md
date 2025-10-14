@@ -63,6 +63,83 @@ Exibe destaques automáticos, alertas e permite comandos personalizados.
 8.	Histórico
 Armazena todas as perguntas e respostas feitas ao agente, com opção de exportar como .docx.
 
+## 🚀 Como Executar o Projeto
+
+### 🔧 Requisitos
+- Python 3.8+
+- Docker (opcional, para execução via container)
+
+### 🖥️ Execução Local
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/amandapraca/chatfiscal.git
+   cd chatfiscal
+   ```
+
+2. Instale as dependências:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Execute o aplicativo:
+   ```bash
+   streamlit run app.py
+   ```
+
+4. Acesse o aplicativo no navegador em: `http://localhost:8501`
+
+### 🐳 Execução com Docker
+1. Construa a imagem Docker:
+   ```bash
+   docker-compose build
+   ```
+
+2. Inicie o container:
+   ```bash
+   docker-compose up
+   ```
+
+3. Acesse o aplicativo no navegador em: `http://localhost:8501`
+
+4. Para parar o container:
+   ```bash
+   docker-compose down
+   ```
+
+## 📂 Exemplos de Arquivos
+
+### Exemplo de Arquivo CSV
+```csv
+Emitente,Data,Valor,CFOP
+Empresa A,2025-10-01,1000.00,5102
+Empresa B,2025-10-02,-500.00,6101
+Empresa C,2025-10-03,200.00,INVALIDO
+```
+
+### Exemplo de Arquivo XML
+```xml
+<NotasFiscais>
+    <Nota>
+        <Emitente>Empresa A</Emitente>
+        <Data>2025-10-01</Data>
+        <Valor>1000.00</Valor>
+        <CFOP>5102</CFOP>
+    </Nota>
+    <Nota>
+        <Emitente>Empresa B</Emitente>
+        <Data>2025-10-02</Data>
+        <Valor>-500.00</Valor>
+        <CFOP>6101</CFOP>
+    </Nota>
+    <Nota>
+        <Emitente>Empresa C</Emitente>
+        <Data>2025-10-03</Data>
+        <Valor>200.00</Valor>
+        <CFOP>INVALIDO</CFOP>
+    </Nota>
+</NotasFiscais>
+```
+
 Requisitos
 •	Python 3.8 ou superior
 •	Navegador moderno (Chrome, Firefox, Edge)

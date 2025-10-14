@@ -73,7 +73,7 @@ Formatos: .docx, .csv, .json.
 Tecnologias: python-docx, pandas.
 Saída: Arquivos prontos para download.
 
-3.6 Módulo Integração com ERPs
+3.6 Módulo Integração com ERPs (REMOVER MODULO, NÂO APLICAR À VERSÃO ATUAL DO AGENTE)
 
 Responsabilidade: Conectar o ChatFiscal aos principais ERPs (Domínio, Alterdata, Protheus).
 Tecnologias: APIs específicas dos ERPs.

@@ -87,7 +87,7 @@ class AgentManager:
             try:
                 df = pd.read_csv(arquivo, encoding="utf-8", sep=None, engine="python")
                 self.memoria.salvar("arquivo_carregado", df)
-                return "Arquivo CSV carregado com sucesso."
+                return df
             except Exception as e:
                 return f"Erro ao carregar arquivo CSV: {e}"
         elif nome.endswith(".xml"):
@@ -102,7 +102,7 @@ class AgentManager:
                     dados.append(info)
                 df = pd.DataFrame(dados)
                 self.memoria.salvar("arquivo_carregado", df)
-                return "Arquivo XML carregado com sucesso."
+                return df
             except Exception as e:
                 return f"Erro ao carregar arquivo XML: {e}"
         else:

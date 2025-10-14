@@ -9,7 +9,7 @@ class NotaFiscal(BaseModel):
     valor: float = Field(
         gt=0, description="Valor da nota fiscal deve ser maior que zero."
     )
-    cfop: str = Field(regex=r"^\d{4}$", description="CFOP deve conter 4 dígitos.")
+    cfop: str = Field(pattern=r"^\d{4}$", description="CFOP deve conter 4 dígitos.")
     emitente: str
     data: str
 

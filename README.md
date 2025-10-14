@@ -76,17 +76,24 @@ Armazena todas as perguntas e respostas feitas ao agente, com opção de exporta
    cd chatfiscal
    ```
 
-2. Instale as dependências:
+2. (Opcional) Crie um ambiente virtual:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Linux/macOS
+   venv\Scripts\activate   # Windows
+   ```
+
+3. Instale as dependências:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Execute o aplicativo:
+4. Execute o aplicativo:
    ```bash
    streamlit run app.py
    ```
 
-4. Acesse o aplicativo no navegador em: `http://localhost:8501`
+5. Acesse o aplicativo no navegador em: `http://localhost:8501`
 
 ### 🐳 Execução com Docker
 1. Construa a imagem Docker:
@@ -181,3 +188,92 @@ Tratamento de Erros
 •	O app nunca quebra com arquivos incompletos
 •	Usa st.stop() para interromper execuções inválidas com segurança
 •	Mensagens amigáveis orientam o usuário em caso de erro
+
+## 🛠️ Arquitetura Modular
+
+O ChatFiscal segue uma arquitetura modular composta por um Agente Pai (`AgentManager`) e módulos especializados. Abaixo está uma visão geral:
+
+### **Agente Pai (`AgentManager`)**
+- **Função**: Coordenar os módulos filhos e consolidar as respostas.
+- **Métodos Principais**:
+  - `carregar_arquivo(arquivo)`: Processa arquivos CSV ou XML e retorna um DataFrame.
+  - `validar_arquivo()`: Valida os dados carregados e retorna um relatório de inconsistências.
+  - `gerar_resposta(pergunta)`: Gera respostas inteligentes com base nos dados carregados.
+
+### **Módulos Filhos**
+1. **Leitor de Arquivos**:
+   - **Responsabilidade**: Processar arquivos CSV e XML.
+   - **Tecnologias**: `pandas`, `xml.etree.ElementTree`.
+   - **Exemplo de Uso**:
+     ```python
+     from agent_manager import AgentManager
+     manager = AgentManager()
+     df = manager.carregar_arquivo("exemplo.csv")
+     print(df.head())
+     ```
+
+2. **Validação Fiscal**:
+   - **Responsabilidade**: Validar dados fiscais (CFOP, valores negativos).
+   - **Tecnologias**: `Pydantic`.
+   - **Exemplo de Uso**:
+     ```python
+     relatorio = manager.validar_arquivo()
+     print(relatorio)
+     ```
+
+3. **Respostas Inteligentes**:
+   - **Responsabilidade**: Responder perguntas em linguagem natural.
+   - **Tecnologias**: `LangChain`, `LlamaIndex`.
+   - **Exemplo de Uso**:
+     ```python
+     resposta = manager.gerar_resposta("Qual o faturamento total?")
+     print(resposta)
+     ```
+
+4. **Visualização**:
+   - **Responsabilidade**: Gerar gráficos interativos.
+   - **Tecnologias**: `seaborn`, `plotly`.
+
+5. **Exportação**:
+   - **Responsabilidade**: Exportar relatórios e dados.
+   - **Tecnologias**: `python-docx`, `pandas`.
+
+## 📘 Exemplos de Uso
+
+### **Carregar Arquivo**
+```python
+from agent_manager import AgentManager
+manager = AgentManager()
+df = manager.carregar_arquivo("exemplo.csv")
+print(df.head())
+```
+
+### **Validar Arquivo**
+```python
+relatorio = manager.validar_arquivo()
+print(relatorio)
+```
+
+### **Gerar Resposta**
+```python
+resposta = manager.gerar_resposta("Qual o faturamento total?")
+print(resposta)
+```
+
+## ✅ Testes e Validação
+
+O projeto inclui testes unitários para validar as principais funcionalidades. Para executar os testes, use o comando:
+
+```bash
+python -m unittest discover
+```
+
+### Cobertura dos Testes
+1. **Carregamento de Arquivos**:
+   - Verifica se arquivos CSV e XML são processados corretamente.
+2. **Validação de Dados**:
+   - Garante que inconsistências fiscais sejam detectadas.
+3. **Geração de Respostas**:
+   - Testa a capacidade de responder perguntas com base nos dados carregados.
+
+Os testes garantem a integridade do sistema e podem ser expandidos conforme novas funcionalidades forem adicionadas.

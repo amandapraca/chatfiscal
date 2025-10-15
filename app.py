@@ -2,6 +2,7 @@
 import streamlit as st
 from agent_manager import AgentManager
 import pandas as pd
+from llm_utils import gerar_resposta_llm
 
 # Inicialização do agente pai
 manager = AgentManager()
@@ -65,7 +66,7 @@ with abas[0]:
 
         if pergunta and st.button("Enviar", key="botao_enviar_pergunta"):
             with st.spinner("Analisando sua pergunta..."):
-                resposta = manager.gerar_resposta_llm(pergunta, df)
+                resposta = gerar_resposta_llm(pergunta, st.session_state["df"])
                 st.session_state["historico"].append((pergunta, resposta))
                 st.markdown(f"**Resposta do agente:** {resposta}")
     else:

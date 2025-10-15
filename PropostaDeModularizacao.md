@@ -73,7 +73,7 @@ Formatos: .docx, .csv, .json.
 Tecnologias: python-docx, pandas.
 Saída: Arquivos prontos para download.
 
-3.6 Módulo Integração com ERPs (REMOVER MODULO, NÂO APLICAR À VERSÃO ATUAL DO AGENTE)
+3.6 Módulo Integração com ERPs (MODULO REMOVIDO ✅, NÂO APLICAR À VERSÃO ATUAL DO AGENTE)
 
 Responsabilidade: Conectar o ChatFiscal aos principais ERPs (Domínio, Alterdata, Protheus).
 Tecnologias: APIs específicas dos ERPs.
@@ -163,8 +163,8 @@ Controle de Concorrência: usar threading.Lock para evitar conflitos.
 Módulo	Descrição	Status	Ação Necessária
 file_reader.py	Leitor de CSV, XML, PDF e OCR	✅ Sem erros	—
 data_validator.py	Validação fiscal com Pydantic	✅ Sem erros	—
-visualization.py	Gráficos e dashboards	⚠️ Dependências faltando	pip install seaborn plotly
-exporter.py	Exportação para CSV, JSON, Word	⚠️ Dependência python-docx	Instalar biblioteca
+visualization.py	Gráficos e dashboards	✅ Dependências faltando	pip install seaborn plotly
+exporter.py	Exportação para CSV, JSON, Word	✅ Dependência python-docx	Instalar biblioteca
 erp_integration.py	Integração com ERPs	✅ Sem erros	—
 llm_utils.py	Geração de respostas inteligentes	✅ Integrado ao AgentManager	—
 agent_manager.py	Coordenação e integração de módulos	✅ Implementado	—

@@ -95,11 +95,23 @@ class AgentManager:
                 tree = ET.parse(arquivo)
                 root = tree.getroot()
                 dados = []
-                for nota in root.findall(".//NFe"):
+
+                # Suporte para diferentes estruturas de XML
+                for nota in (
+                    root.findall(".//Nota")
+                    or root.findall(".//NFe")
+                    or root.findall(".//NFSE")
+                ):
                     info = {}
                     for elem in nota.iter():
                         info[elem.tag] = elem.text
                     dados.append(info)
+
+                if not dados:
+                    return (
+                        "Erro: Estrutura de XML não reconhecida. Verifique o arquivo."
+                    )
+
                 df = pd.DataFrame(dados)
                 self.memoria.salvar("arquivo_carregado", df)
                 return df

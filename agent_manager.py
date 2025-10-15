@@ -6,6 +6,18 @@ import xml.etree.ElementTree as ET
 from llm_utils import gerar_resposta_llm as llm_resposta
 from file_reader import FileReader
 from data_validator import DataValidator
+import logging
+
+
+# Configuração básica do logger
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("agent_manager.log"),
+        logging.StreamHandler(),
+    ],
+)
 
 
 class AgentManager:
@@ -92,8 +104,13 @@ class AgentManager:
                 return f"Erro ao carregar arquivo CSV: {e}"
         elif nome.endswith(".xml"):
             try:
+                logging.info(f"Iniciando o processamento do arquivo XML: {nome}")
                 tree = ET.parse(arquivo)
                 root = tree.getroot()
+                logging.debug(
+                    f"Estrutura do XML carregada: {ET.tostring(root, encoding='unicode')}"
+                )
+
                 dados = []
 
                 # Suporte para diferentes estruturas de XML
@@ -108,14 +125,21 @@ class AgentManager:
                     dados.append(info)
 
                 if not dados:
+                    logging.warning(
+                        "Nenhum dado encontrado no XML. Verifique a estrutura do arquivo."
+                    )
                     return (
                         "Erro: Estrutura de XML não reconhecida. Verifique o arquivo."
                     )
 
                 df = pd.DataFrame(dados)
+                logging.info(
+                    f"Arquivo XML processado com sucesso. Linhas carregadas: {len(df)}"
+                )
                 self.memoria.salvar("arquivo_carregado", df)
                 return df
             except Exception as e:
+                logging.error(f"Erro ao carregar arquivo XML: {e}", exc_info=True)
                 return f"Erro ao carregar arquivo XML: {e}"
         else:
             return "Formato de arquivo não suportado."

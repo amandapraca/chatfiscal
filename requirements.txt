@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+seaborn
+plotly
+python-docx
+pytesseract
+PyPDF2
+pydantic
+python-dotenv
+google-generativeai

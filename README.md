@@ -277,3 +277,60 @@ python -m unittest discover
    - Testa a capacidade de responder perguntas com base nos dados carregados.
 
 Os testes garantem a integridade do sistema e podem ser expandidos conforme novas funcionalidades forem adicionadas.
+
+
+# 🦉 Função do Corujito — Validação Fiscal Inteligente
+
+O **Corujito** é o assistente fiscal do ChatFiscal, responsável por analisar os dados carregados e gerar dicas inteligentes com base em regras tributárias. Ele combina validações técnicas com linguagem natural, oferecendo orientações claras e contextualizadas para quem trabalha com documentos fiscais.
+
+---
+
+## 🎯 Objetivo
+
+A função `gerar_dica_corujito(df)` tem como objetivo inspecionar o conteúdo de um DataFrame fiscal e identificar inconsistências, padrões suspeitos ou pontos de atenção. A partir disso, ela gera uma dica personalizada que pode ser exibida na interface do ChatFiscal.
+
+---
+
+## 🧠 Como funciona
+
+- **Análise técnica dos dados**  
+  A função verifica CFOPs incomuns, CSTs de substituição tributária, campos obrigatórios nulos, ICMS zerado em operações internas, duplicidade de notas fiscais, entre outros.
+
+- **Contexto tributário**  
+  Também considera regras específicas por estado (ex: SP) e regime tributário (ex: Simples Nacional).
+
+- **Geração de linguagem natural com LLM**  
+  As observações técnicas são transformadas em uma dica amigável e compreensível por meio de uma LLM (Large Language Model), tornando a comunicação mais clara para o usuário.
+
+---
+
+## 📋 Exemplos de dicas geradas
+
+- ⚠️ Foram encontrados CFOPs incomuns como 1910 e 3949. Verifique se são válidos para sua operação.  
+- 🔍 Há registros com CST 060, que indicam substituição tributária. Certifique-se de que estão corretamente aplicados.  
+- 📉 Alguns valores de ICMS estão zerados em operações que deveriam gerar imposto. Pode haver erro de cálculo.  
+- 🧾 Os seguintes campos obrigatórios possuem valores nulos: cfop, cst, valor_total.  
+- 📌 Foram encontradas notas fiscais duplicadas. Verifique se há registros repetidos.  
+- 📍 Em SP, CSTs 040 e 041 indicam isenção. Verifique se estão corretamente aplicados.  
+- ✅ Nenhuma inconsistência aparente. Mas continue atento aos detalhes fiscais!
+
+---
+
+## 🧪 Testes automatizados
+
+A função é acompanhada por testes unitários que simulam cenários fiscais e verificam se as dicas estão sendo geradas corretamente. Os testes foram desenvolvidos com `pytest` e cobrem os principais casos de validação.
+
+---
+
+## 💾 Interatividade
+
+O Corujito permite que o usuário **salve** ou **ignore** cada dica exibida. Isso torna possível:
+
+- Criar um histórico de validações por arquivo ou data  
+- Gerar relatórios com base nas dicas salvas  
+- Evitar repetição de mensagens já vistas  
+- Integrar com filtros do Painel Inteligente
+
+---
+
+> O Corujito não substitui o Painel Inteligente — ele o complementa com uma visão narrativa e contextual, ajudando o usuário a interpretar os dados com mais clareza e agilidade.

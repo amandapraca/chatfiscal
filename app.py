@@ -45,11 +45,27 @@ with abas[0]:
         key="upload_arquivos_fiscais",
     )
 
+    st.markdown("### Logs de Depuração")
+
+    # Log para verificar os arquivos carregados
+    if arquivos:
+        st.write(f"Arquivos carregados: {[arquivo.name for arquivo in arquivos]}")
+    else:
+        st.write("Nenhum arquivo carregado.")
+
     dfs = []
     for arquivo in arquivos:
+        st.write(
+            f"Processando arquivo: {arquivo.name}"
+        )  # Log do arquivo em processamento
         df_individual = manager.carregar_arquivo(arquivo)
         if isinstance(df_individual, pd.DataFrame) and not df_individual.empty:
+            st.write(
+                f"Arquivo {arquivo.name} processado com sucesso. Linhas: {len(df_individual)}"
+            )
             dfs.append(df_individual)
+        else:
+            st.write(f"Falha ao processar o arquivo {arquivo.name} ou arquivo vazio.")
 
     if dfs:
         df = pd.concat(dfs, ignore_index=True)

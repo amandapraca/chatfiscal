@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from PyPDF2 import PdfReader
 import pytesseract
 from PIL import Image
+import logging
 
 
 class FileReader:
@@ -26,31 +27,45 @@ class FileReader:
             root = tree.getroot()
             dados = []
 
-            # Processar NFSe
-            for nota in root.findall(".//nf"):
-                info = {
-                    "numero_nfse": nota.findtext("numero_nfse"),
-                    "data_nfse": nota.findtext("data_nfse"),
-                    "valor_total": nota.findtext("valor_total"),
-                    "observacao": nota.findtext("observacao"),
-                }
-                dados.append(info)
+            # Tentar diferentes estruturas de XML
+            estruturas = [
+                ".//nf",  # Para seu XML atual
+                ".//NFe",  # Para NFe padrão
+                ".//NotaFiscal",  # Para outras notas
+                ".//NFSe",  # Para NFSe
+                ".//Nota",  # Para estrutura genérica
+            ]
 
-            # Processar NFe (se aplicável)
-            for nota in root.findall(".//NFe"):
-                info = {}
-                for elem in nota.iter():
-                    info[elem.tag] = elem.text
-                dados.append(info)
+            for estrutura in estruturas:
+                notas = root.findall(estrutura)
+                if notas:
+                    for nota in notas:
+                        info = {}
+                        # Coletar todos os elementos filhos
+                        for elem in nota.iter():
+                            if elem.text and elem.text.strip():
+                                info[elem.tag] = elem.text.strip()
+                        # Também coletar atributos se existirem
+                        for key, value in nota.attrib.items():
+                            info[key] = value
 
-            # Processar outras tags genéricas
-            for nota in root.findall(".//NotaFiscal"):
-                info = {}
-                for elem in nota.iter():
-                    info[elem.tag] = elem.text
-                dados.append(info)
+                        if info:  # Só adicionar se tiver dados
+                            dados.append(info)
+
+                    break  # Para na primeira estrutura que encontrar
+
+            if not dados:
+                # Se não encontrou nenhuma estrutura conhecida, tentar extrair tudo
+                logging.warning(
+                    "Estrutura não reconhecida, extraindo todos os elementos"
+                )
+                for elem in root.iter():
+                    if elem.text and elem.text.strip():
+                        info = {elem.tag: elem.text.strip()}
+                        dados.append(info)
 
             return pd.DataFrame(dados)
+
         except Exception as e:
             raise ValueError(f"Erro ao carregar arquivo XML: {e}")
 

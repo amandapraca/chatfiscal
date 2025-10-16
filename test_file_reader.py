@@ -2,6 +2,7 @@
 
 from file_reader import FileReader
 import os
+import xml.etree.ElementTree as ET
 
 
 def test_carregar_csv():
@@ -34,7 +35,22 @@ def test_carregar_xml():
         print(f"Erro ao carregar XML: {e}")
 
 
+def testar_xml(arquivo_xml):
+    try:
+        tree = ET.parse(arquivo_xml)
+        root = tree.getroot()
+        print("Elementos encontrados:")
+        for elem in root.iter():
+            print(f"Tag: {elem.tag}, Texto: {elem.text}")
+    except Exception as e:
+        print(f"Erro: {e}")
+
+
 if __name__ == "__main__":
     print("Diretório atual:", os.getcwd())
     test_carregar_csv()
     test_carregar_xml()
+
+    # Exemplo de uso
+    arquivo_teste = "exemplo.xml"  # Substitua pelo caminho do seu arquivo XML
+    testar_xml(arquivo_teste)

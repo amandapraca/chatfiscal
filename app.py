@@ -1,14 +1,26 @@
-# 🧩 PARTE 1 — Imports, sessão e estrutura base
 import streamlit as st
-from agent_manager import AgentManager
 import pandas as pd
+from agent_manager import AgentManager
 from llm_utils import gerar_resposta_llm
-
-# Inicialização do agente pai
-manager = AgentManager()
+from main.dicas_corujito import gerar_dica_corujito
+from main.interface import (
+    montar_interface,
+    exibir_resposta_agente,
+    exibir_rodape,
+    mostrar_alerta,
+    mostrar_erro,
+    mostrar_sucesso,
+    boas_vindas,
+    introducao_chatfiscal,
+    exibir_dica_corujito
+)
 
 # Configuração da página
 st.set_page_config(page_title="ChatFiscal", layout="wide")
+montar_interface()
+
+# Inicialização do agente pai
+manager = AgentManager()
 
 # Inicialização da sessão
 if "df" not in st.session_state:
@@ -17,26 +29,22 @@ if "historico" not in st.session_state:
     st.session_state["historico"] = []
 if "arquivo_carregado" not in st.session_state:
     st.session_state["arquivo_carregado"] = False
+if "dica_exibida" not in st.session_state:
+    st.session_state["dica_exibida"] = False
 
 # Criação das abas
-abas = st.tabs(
-    [
-        "📊 Dados & Perguntas",
-        "📚 Histórico",
-        "🔎 Auditoria",
-        "📈 Visualizações",
-        "🧠 Painel Inteligente",
-    ]
-)
+abas = st.tabs([
+    "📊 Dados & Perguntas",
+    "📚 Histórico",
+    "🔎 Auditoria",
+    "📈 Visualizações",
+    "🧠 Painel Inteligente",
+])
 
-
-# 🧩 PARTE 4 — Upload de Arquivos e Perguntas ao Agente
+# 🧩 Aba 1 — Upload de Arquivos e Perguntas ao Agente
 with abas[0]:
     st.subheader("📊 Dados & Perguntas")
-
-    st.markdown(
-        "Envie um ou mais arquivos fiscais para análise. Aceitamos arquivos CSV ou XML."
-    )
+    st.markdown("Envie um ou mais arquivos fiscais para análise. Aceitamos arquivos CSV ou XML.")
 
     arquivos = st.file_uploader(
         "📎 Escolha os arquivos",
@@ -45,59 +53,39 @@ with abas[0]:
         key="upload_arquivos_fiscais",
     )
 
-    st.markdown("### Logs de Depuração")
-
-    # Log para verificar os arquivos carregados
-    if arquivos:
-        st.write(f"Arquivos carregados: {[arquivo.name for arquivo in arquivos]}")
-    else:
-        st.write("Nenhum arquivo carregado.")
-
     dfs = []
     for arquivo in arquivos:
-        st.write(
-            f"Processando arquivo: {arquivo.name}"
-        )  # Log do arquivo em processamento
         df_individual = manager.carregar_arquivo(arquivo)
         if isinstance(df_individual, pd.DataFrame) and not df_individual.empty:
-            st.write(
-                f"Arquivo {arquivo.name} processado com sucesso. Linhas: {len(df_individual)}"
-            )
             dfs.append(df_individual)
-        else:
-            st.write(f"Falha ao processar o arquivo {arquivo.name} ou arquivo vazio.")
 
     if dfs:
         df = pd.concat(dfs, ignore_index=True)
         st.session_state["df"] = df
         st.session_state["arquivo_carregado"] = True
+        st.session_state["dica_exibida"] = False
 
-        st.success(f"✅ {len(dfs)} arquivo(s) carregado(s) com sucesso!")
+        mostrar_sucesso(f"{len(dfs)} arquivo(s) carregado(s) com sucesso!")
         st.dataframe(df)
 
-        # Campo de pergunta ao agente
-        pergunta = st.text_input(
-            "Digite uma pergunta fiscal para o agente:", key="campo_pergunta_agente"
-        )
+        if not st.session_state["dica_exibida"]:
+            dica = gerar_dica_corujito(df)
+            exibir_dica_corujito(dica)
+            st.session_state["dica_exibida"] = True
+
+        pergunta = st.text_input("Digite uma pergunta fiscal para o agente:", key="campo_pergunta_agente")
 
         if pergunta and st.button("Enviar", key="botao_enviar_pergunta"):
             with st.spinner("Analisando sua pergunta..."):
-                resposta = gerar_resposta_llm(pergunta, st.session_state["df"])
+                resposta = gerar_resposta_llm(pergunta, df)
                 st.session_state["historico"].append((pergunta, resposta))
-                st.markdown(f"**Resposta do agente:** {resposta}")
+                exibir_resposta_agente(pergunta, resposta)
     else:
-        st.info(
-            "Nenhum arquivo carregado ainda. Você pode simular dados ou enviar arquivos reais."
-        )
-        st.stop()
+        mostrar_alerta("Nenhum arquivo carregado ainda. Você pode simular dados ou enviar arquivos reais.")
 
-
-# 🧩 PARTE 8 — Histórico de Perguntas e Respostas
+# 🧩 Aba 2 — Histórico de Perguntas e Respostas
 with abas[1]:
     st.subheader("📚 Histórico de Perguntas")
-
-    if "historico" not in st.session_state:
-        st.session_state["historico"] = []
 
     if st.session_state["historico"]:
         for i, (pergunta, resposta) in enumerate(st.session_state["historico"], 1):
@@ -105,12 +93,10 @@ with abas[1]:
             st.markdown(f"**Resposta:** {resposta}")
             st.markdown("---")
 
-        # Botão para limpar histórico
         if st.button("🧹 Limpar histórico", key="botao_limpar_historico"):
             st.session_state["historico"] = []
-            st.success("Histórico limpo com sucesso!")
+            mostrar_sucesso("Histórico limpo com sucesso!")
 
-        # Exportar como .docx
         try:
             from docx import Document
             from io import BytesIO
@@ -135,22 +121,29 @@ with abas[1]:
                 key="botao_exportar_docx",
             )
         except Exception as e:
-            st.warning(f"Erro ao gerar relatório: {e}")
+            mostrar_erro(f"Erro ao gerar relatório: {e}")
     else:
-        st.info("Nenhuma pergunta registrada ainda. Faça uma análise para começar.")
-        st.stop()
+        mostrar_alerta("Nenhuma pergunta registrada ainda. Faça uma análise para começar.")
 
-# Aba: Validação
+# 🧩 Aba 3 — Auditoria
 with abas[2]:
-    st.header("📚 Validação")
+    st.header("🔎 Auditoria")
     if st.button("Validar Arquivo"):
         resultado = manager.validar_arquivo()
         st.text(resultado)
 
-# Aba: Respostas
+# 🧩 Aba 4 — Visualizações
 with abas[3]:
-    st.header("🔎 Respostas")
+    st.header("📈 Visualizações")
     pergunta = st.text_input("Faça uma pergunta sobre os dados carregados")
     if st.button("Gerar Resposta"):
         resposta = manager.gerar_resposta(pergunta)
         st.text(resposta)
+
+# 🧩 Aba 5 — Painel Inteligente (placeholder)
+with abas[4]:
+    st.header("🧠 Painel Inteligente")
+    st.info("Em breve: KPIs fiscais, gráficos e insights inteligentes.")
+
+# 🧩 Rodapé institucional
+exibir_rodape()

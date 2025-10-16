@@ -13,6 +13,9 @@ Correções Front:
 - O fundo atual do toast não realça bem o texto em amarelo.
 - Sugestão: aplicar um fundo azul escuro para melhorar o contraste e destacar a mensagem de boas-vindas.
 
+3. Arrumar o botão do corujito (o corujito aparece quando vc inclui um arquivo e ele informa algo que esteja duplicado, errado neste arquivo - ver readme para entender a função dele)
+
+
 
 
 

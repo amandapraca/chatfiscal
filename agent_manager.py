@@ -1,6 +1,7 @@
 # agent_manager.py - VERSÃO COM MEMÓRIA INTELIGENTE INTEGRADA
 
 import os
+import sys
 import pandas as pd
 import logging
 import tempfile
@@ -20,41 +21,78 @@ from llm_utils import gerar_resposta_llm as llm_resposta
 # ✅ CORREÇÃO: Importa AMBAS as classes
 from memory_module import MemoriaInteligente, MemoriaCompartilhada
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger(__name__)
+# ══════════════════════════════════════════════════════════════
+# ✅ CORREÇÃO 1: CONFIGURAÇÃO DE LOGGING COM UTF-8 PARA WINDOWS
+# ══════════════════════════════════════════════════════════════
 
+# Força UTF-8 no ambiente Python (Windows)
+if sys.platform == 'win32':
+    os.environ['PYTHONUTF8'] = '1'
+
+# Configuração do logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Remove handlers existentes para evitar duplicação
+if logger.hasHandlers():
+    logger.handlers.clear()
+
+# Handler para console com UTF-8
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setLevel(logging.INFO)
+
+# Tenta configurar UTF-8 (Python 3.7+)
+try:
+    console_handler.stream.reconfigure(encoding='utf-8')
+except AttributeError:
+    # Fallback para versões antigas - não faz nada
+    pass
+
+# Formatador
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(formatter)
+logger.addHandler(console_handler)
+
+# ══════════════════════════════════════════════════════════════
+# CLASSE AgentManager
+# ══════════════════════════════════════════════════════════════
 
 class AgentManager:
     def __init__(self):
         self.persist_directory = "vectorstore"
         os.makedirs(self.persist_directory, exist_ok=True)
 
+        # ✅ CORREÇÃO 2: ESPECIFICA DISPOSITIVO CPU EXPLICITAMENTE
         try:
-            self.embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-            logger.info("✅ Embeddings carregados com sucesso.")
+            self.embeddings = HuggingFaceEmbeddings(
+                model_name="sentence-transformers/all-MiniLM-L6-v2",
+                model_kwargs={'device': 'cpu'},
+                encode_kwargs={'normalize_embeddings': False}
+            )
+            logger.info("Embeddings carregados com sucesso")
         except Exception as e:
-            logger.error(f"❌ Erro ao inicializar embeddings: {e}")
+            logger.error(f"Erro ao inicializar embeddings: {e}")
             raise
 
         self.vetorstore_list = []
         self.arquivos_processados = set()
         
-        # ✨ INICIALIZA MEMÓRIAS
+        # INICIALIZA MEMÓRIAS
         try:
             self.memoria_inteligente = MemoriaInteligente(persist_dir="memoria_chatfiscal")
             self.memoria_compartilhada = MemoriaCompartilhada()
-            logger.info("🧠 Memória Inteligente inicializada")
+            logger.info("Memoria Inteligente inicializada")
         except Exception as e:
-            logger.warning(f"⚠️ Erro ao inicializar memória: {e}")
+            logger.warning(f"Erro ao inicializar memoria: {e}")
             self.memoria_inteligente = None
             self.memoria_compartilhada = None
         
-        logger.info("🔄 AgentManager inicializado com memória inteligente")
+        logger.info("AgentManager inicializado com memoria inteligente")
 
     def carregar_arquivo(self, arquivo):
         """Carrega arquivo CSV, XML ou PDF"""
         nome = arquivo.name.lower()
-        logger.info(f"🟡 Carregando arquivo: {nome}")
+        logger.info(f"Carregando arquivo: {nome}")
 
         try:
             if nome.endswith(".csv"):
@@ -69,20 +107,20 @@ class AgentManager:
                 return self._processar_arquivo_pdf(arquivo)
 
             else:
-                return "❌ Formato não suportado (apenas CSV, XML, PDF)"
+                return "Formato nao suportado (apenas CSV, XML, PDF)"
 
         except Exception as e:
-            logger.error(f"❌ Erro ao carregar arquivo {nome}: {e}")
-            return f"❌ Erro ao carregar arquivo: {e}"
+            logger.error(f"Erro ao carregar arquivo {nome}: {e}")
+            return f"Erro ao carregar arquivo: {e}"
 
     def _processar_df(self, df, nome):
         """Processa DataFrame e sincroniza com session state"""
         if df is None or df.empty:
-            logger.warning(f"⚠️ Arquivo {nome} vazio ou inválido.")
+            logger.warning(f"Arquivo {nome} vazio ou invalido")
             return None
         
         if nome in self.arquivos_processados:
-            logger.warning(f"⚠️ Arquivo {nome} já foi processado. Ignorando.")
+            logger.warning(f"Arquivo {nome} ja foi processado. Ignorando")
             return df
         
         self.arquivos_processados.add(nome)
@@ -100,7 +138,7 @@ class AgentManager:
             df_final = df_final.drop_duplicates().reset_index(drop=True)
             st.session_state["df_csv_unificado"] = df_final
         
-        # ✨ SALVA NA MEMÓRIA COMPARTILHADA
+        # SALVA NA MEMÓRIA COMPARTILHADA
         if self.memoria_compartilhada:
             self.memoria_compartilhada.salvar(f"arquivo_{nome}", {
                 "nome": nome,
@@ -110,12 +148,12 @@ class AgentManager:
                 "timestamp": datetime.now().isoformat()
             })
         
-        logger.info(f"✅ '{nome}' adicionado com {len(df)} linhas. Total: {len(st.session_state['df_csv_unificado'])} linhas únicas")
+        logger.info(f"'{nome}' adicionado com {len(df)} linhas. Total: {len(st.session_state['df_csv_unificado'])} linhas unicas")
         return df
 
     def _processar_arquivo_pdf(self, arquivo):
         """Processa PDF e indexa com FAISS"""
-        logger.info(f"📄 Processando PDF: {arquivo.name}")
+        logger.info(f"Processando PDF: {arquivo.name}")
         temp_path = None
         
         try:
@@ -127,9 +165,9 @@ class AgentManager:
             try:
                 loader = PyPDFLoader(temp_path)
                 docs = loader.load()
-                logger.info(f"✅ PDF carregado: {len(docs)} páginas")
+                logger.info(f"PDF carregado: {len(docs)} paginas")
             except Exception as e:
-                logger.warning(f"⚠️ PyPDFLoader falhou, tentando PyPDF2: {e}")
+                logger.warning(f"PyPDFLoader falhou, tentando PyPDF2: {e}")
                 
                 try:
                     pdf_reader = PyPDF2.PdfReader(temp_path)
@@ -142,14 +180,14 @@ class AgentManager:
                                     metadata={"page": i + 1, "arquivo": arquivo.name}
                                 )
                             )
-                    logger.info(f"✅ PDF carregado com PyPDF2: {len(docs)} páginas")
+                    logger.info(f"PDF carregado com PyPDF2: {len(docs)} paginas")
                 except Exception as e2:
-                    logger.error(f"❌ Erro com PyPDF2: {e2}")
-                    return f"❌ Não foi possível ler o PDF {arquivo.name}"
+                    logger.error(f"Erro com PyPDF2: {e2}")
+                    return f"Nao foi possivel ler o PDF {arquivo.name}"
 
             if not docs:
-                logger.warning(f"⚠️ PDF sem conteúdo textual: {arquivo.name}")
-                return f"⚠️ PDF '{arquivo.name}' não contém texto extraível"
+                logger.warning(f"PDF sem conteudo textual: {arquivo.name}")
+                return f"PDF '{arquivo.name}' nao contem texto extraivel"
 
             splitter = RecursiveCharacterTextSplitter(
                 chunk_size=1000,
@@ -159,8 +197,8 @@ class AgentManager:
             chunks = splitter.split_documents(docs)
             
             if not chunks:
-                logger.warning(f"⚠️ Nenhum chunk extraído: {arquivo.name}")
-                return f"⚠️ Nenhum conteúdo pôde ser indexado em '{arquivo.name}'"
+                logger.warning(f"Nenhum chunk extraido: {arquivo.name}")
+                return f"Nenhum conteudo pode ser indexado em '{arquivo.name}'"
 
             faiss_index = FAISS.from_documents(chunks, self.embeddings)
             self.vetorstore_list.append(faiss_index)
@@ -184,7 +222,7 @@ class AgentManager:
                 "texto": "\n".join([c.page_content for c in chunks])
             })
 
-            # ✨ SALVA NA MEMÓRIA COMPARTILHADA
+            # SALVA NA MEMÓRIA COMPARTILHADA
             if self.memoria_compartilhada:
                 self.memoria_compartilhada.salvar(f"arquivo_{arquivo.name}", {
                     "nome": arquivo.name,
@@ -193,12 +231,12 @@ class AgentManager:
                     "timestamp": datetime.now().isoformat()
                 })
 
-            logger.info(f"✅ PDF '{arquivo.name}' indexado com {len(chunks)} chunks")
-            return f"✅ PDF '{arquivo.name}' indexado com {len(chunks)} blocos"
+            logger.info(f"PDF '{arquivo.name}' indexado com {len(chunks)} chunks")
+            return f"PDF '{arquivo.name}' indexado com {len(chunks)} blocos"
 
         except Exception as e:
-            logger.error(f"❌ Erro ao processar PDF {arquivo.name}: {str(e)}")
-            return f"❌ Erro ao processar PDF: {str(e)}"
+            logger.error(f"Erro ao processar PDF {arquivo.name}: {str(e)}")
+            return f"Erro ao processar PDF: {str(e)}"
 
         finally:
             if temp_path and os.path.exists(temp_path):
@@ -215,7 +253,7 @@ class AgentManager:
 
         contexto = ""
         for item in texto_pdf_list:
-            contexto += f"\n📄 [{item['nome']}]\n{item['texto']}\n"
+            contexto += f"\n[{item['nome']}]\n{item['texto']}\n"
         
         return contexto if contexto.strip() else None
 
@@ -225,7 +263,7 @@ class AgentManager:
         if df is None or df.empty:
             return None
         
-        contexto = f"📊 Total de registros: {len(df)}\n"
+        contexto = f"Total de registros: {len(df)}\n"
         contexto += f"Colunas: {', '.join(df.columns)}\n"
         contexto += f"Amostra:\n{df.head(3).to_string()}"
         return contexto
@@ -238,7 +276,7 @@ class AgentManager:
             return "Nenhum DataFrame"
         
         info = f"\n{'='*60}\n"
-        info += f"ANÁLISE DE COLUNAS - Total: {len(df.columns)}\n"
+        info += f"ANALISE DE COLUNAS - Total: {len(df.columns)}\n"
         info += f"{'='*60}\n\n"
         
         for col in df.columns:
@@ -246,8 +284,8 @@ class AgentManager:
             non_null = df[col].notna().sum()
             sample = str(df[col].iloc[0])[:50] if len(df) > 0 else "N/A"
             
-            info += f"📌 {col}\n"
-            info += f"   Tipo: {dtype} | Não-nulos: {non_null}/{len(df)} | Sample: {sample}\n\n"
+            info += f"{col}\n"
+            info += f"   Tipo: {dtype} | Nao-nulos: {non_null}/{len(df)} | Sample: {sample}\n\n"
         
         logger.info(info)
         return info
@@ -255,15 +293,15 @@ class AgentManager:
     def calcular_soma_valores(self):
         """
         Calcula soma total de TODOS os valores (CSV + XML).
-        ✅ VERSÃO FINAL - Evita duplicação escolhendo APENAS UMA coluna por registro
+        VERSÃO FINAL - Evita duplicação escolhendo APENAS UMA coluna por registro
         """
         df = st.session_state.get("df_csv_unificado")
         
         if df is None or df.empty:
-            logger.warning("❌ Nenhum DataFrame carregado")
+            logger.warning("Nenhum DataFrame carregado")
             return None
         
-        # ✅ PRIORIDADE - Define ordem de preferência (evita duplicação)
+        # PRIORIDADE - Define ordem de preferência (evita duplicação)
         prioridade = [
             'valor',                    # CSV genérico (máxima prioridade)
             'total_vnf',                # NF-e - Valor total oficial
@@ -286,9 +324,9 @@ class AgentManager:
         soma_total = 0
         valores_encontrados = {}
         
-        logger.info(f"🔍 Analisando {len(df)} registros com {len(df.columns)} colunas")
+        logger.info(f"Analisando {len(df)} registros com {len(df.columns)} colunas")
         
-        # ✅ Para cada linha, escolhe APENAS UMA coluna de valor (sem duplicação)
+        # Para cada linha, escolhe APENAS UMA coluna de valor (sem duplicação)
         for idx, row in df.iterrows():
             melhor_coluna = None
             melhor_valor = 0
@@ -345,7 +383,7 @@ class AgentManager:
                 valores_encontrados[melhor_coluna].append(melhor_valor)
                 logger.debug(f"Registro {idx}: {melhor_coluna} = R$ {melhor_valor:.2f}")
         
-        # ✅ Consolida resultados
+        # Consolida resultados
         detalhes = []
         for coluna, valores in valores_encontrados.items():
             soma_coluna = sum(valores)
@@ -360,16 +398,16 @@ class AgentManager:
                 'maximo': max(valores)
             })
             
-            logger.info(f"💰 '{coluna}': R$ {soma_coluna:,.2f} ({len(valores)} registros)")
+            logger.info(f"'{coluna}': R$ {soma_coluna:,.2f} ({len(valores)} registros)")
         
         if not detalhes:
-            logger.warning("❌ Nenhum valor encontrado")
+            logger.warning("Nenhum valor encontrado")
             return None
         
         # Ordena por soma (maior primeiro)
         detalhes.sort(key=lambda x: x['soma'], reverse=True)
         
-        logger.info(f"✅ SOMA TOTAL SEM DUPLICAÇÃO: R$ {soma_total:,.2f}")
+        logger.info(f"SOMA TOTAL SEM DUPLICACAO: R$ {soma_total:,.2f}")
         
         return {
             'soma_total': soma_total,
@@ -420,22 +458,22 @@ class AgentManager:
     def gerar_resposta(self, pergunta):
         """
         Gera resposta com base no tipo de pergunta
-        🧠 AGORA COM MEMÓRIA INTELIGENTE INTEGRADA
+        AGORA COM MEMÓRIA INTELIGENTE INTEGRADA
         """
-        logger.info(f"💬 Pergunta: {pergunta[:60]}")
+        logger.info(f"Pergunta: {pergunta[:60]}")
         
         df = st.session_state.get("df_csv_unificado")
         pdf_list = st.session_state.get("pdf_list", [])
         
-        # ✨ BUSCA CONTEXTO RELEVANTE NA MEMÓRIA
+        # BUSCA CONTEXTO RELEVANTE NA MEMÓRIA
         contexto_memoria = ""
         if self.memoria_inteligente:
             try:
                 contexto_memoria = self.memoria_inteligente.buscar_contexto_relevante(pergunta, k=3)
                 if contexto_memoria:
-                    logger.info("🧠 Contexto relevante recuperado da memória")
+                    logger.info("Contexto relevante recuperado da memoria")
             except Exception as e:
-                logger.warning(f"⚠️ Erro ao buscar memória: {e}")
+                logger.warning(f"Erro ao buscar memoria: {e}")
         
         pergunta_lower = pergunta.lower()
         
@@ -447,31 +485,31 @@ class AgentManager:
         ]
         
         if any(termo in pergunta_lower for termo in termos_soma):
-            logger.info("💰 Detectada pergunta sobre soma de valores")
+            logger.info("Detectada pergunta sobre soma de valores")
             
             resultado = self.calcular_soma_valores()
             
             if resultado is None:
-                resposta = "❌ Nenhum dado com valores numéricos foi encontrado nos arquivos carregados."
+                resposta = "Nenhum dado com valores numéricos foi encontrado nos arquivos carregados."
             else:
                 soma_total = resultado['soma_total']
                 detalhes = resultado['detalhes']
                 total_registros = resultado['total_registros']
                 total_colunas = resultado['total_colunas_valor']
                 
-                resposta = f"💰 **Soma total consolidada (CSV + XML): R$ {soma_total:,.2f}**\n\n"
-                resposta += f"📊 **Detalhamento ({total_colunas} coluna(s) com valores):**\n\n"
+                resposta = f"**Soma total consolidada (CSV + XML): R$ {soma_total:,.2f}**\n\n"
+                resposta += f"**Detalhamento ({total_colunas} coluna(s) com valores):**\n\n"
                 
                 for i, item in enumerate(detalhes, 1):
                     resposta += f"**{i}. {item['coluna']}**\n"
-                    resposta += f"   💵 Soma: R$ {item['soma']:,.2f}\n"
-                    resposta += f"   📈 Média: R$ {item['media']:,.2f}\n"
-                    resposta += f"   📋 Registros: {item['registros']}\n"
-                    resposta += f"   📊 Range: R$ {item['minimo']:,.2f} a R$ {item['maximo']:,.2f}\n\n"
+                    resposta += f"   Soma: R$ {item['soma']:,.2f}\n"
+                    resposta += f"   Media: R$ {item['media']:,.2f}\n"
+                    resposta += f"   Registros: {item['registros']}\n"
+                    resposta += f"   Range: R$ {item['minimo']:,.2f} a R$ {item['maximo']:,.2f}\n\n"
                 
-                resposta += f"📑 **Total de registros processados: {total_registros}**"
+                resposta += f"**Total de registros processados: {total_registros}**"
             
-            # ✨ SALVA NA MEMÓRIA
+            # SALVA NA MEMÓRIA
             if self.memoria_inteligente:
                 self.memoria_inteligente.salvar_contexto(
                     pergunta=pergunta,
@@ -492,7 +530,7 @@ class AgentManager:
             contagem = self.contar_notas_fiscais()
             
             if contagem['total'] == 0:
-                resposta = "❌ Nenhuma nota fiscal foi carregada ainda."
+                resposta = "Nenhuma nota fiscal foi carregada ainda."
             else:
                 if contagem['total'] == 1:
                     resposta = f"**1 nota fiscal** foi carregada.\n\n"
@@ -500,15 +538,15 @@ class AgentManager:
                     resposta = f"**{contagem['total']} notas fiscais** foram carregadas.\n\n"
                 
                 if contagem['tipo'] == 'MISTO':
-                    resposta += f"📊 **Distribuição:**\n"
-                    resposta += f"- 🔵 **NF-e:** {contagem['nfe']} nota(s)\n"
-                    resposta += f"- 🟣 **NFS-e:** {contagem['nfse']} nota(s)"
+                    resposta += f"**Distribuicao:**\n"
+                    resposta += f"- **NF-e:** {contagem['nfe']} nota(s)\n"
+                    resposta += f"- **NFS-e:** {contagem['nfse']} nota(s)"
                 elif contagem['tipo'] == 'NFe':
-                    resposta += f"🔵 São **NF-e** (Notas Fiscais Eletrônicas)"
+                    resposta += f"Sao **NF-e** (Notas Fiscais Eletronicas)"
                 elif contagem['tipo'] == 'NFSe':
-                    resposta += f"🟣 São **NFS-e** (Notas Fiscais de Serviço)"
+                    resposta += f"Sao **NFS-e** (Notas Fiscais de Servico)"
             
-            # ✨ SALVA NA MEMÓRIA
+            # SALVA NA MEMÓRIA
             if self.memoria_inteligente:
                 self.memoria_inteligente.salvar_contexto(
                     pergunta=pergunta,
@@ -528,10 +566,10 @@ class AgentManager:
         elif tipo_pergunta == 'csv':
             resposta = self._responder_csv(pergunta, df, contexto_memoria)
         else:
-            resposta = "❌ Nenhum dado disponível."
+            resposta = "Nenhum dado disponível."
         
-        # ✨ SALVA NA MEMÓRIA AUTOMATICAMENTE
-        if self.memoria_inteligente and resposta and not resposta.startswith("❌"):
+        # SALVA NA MEMÓRIA AUTOMATICAMENTE
+        if self.memoria_inteligente and resposta and not resposta.startswith("Nenhum"):
             try:
                 self.memoria_inteligente.salvar_contexto(
                     pergunta=pergunta,
@@ -542,9 +580,9 @@ class AgentManager:
                         "tem_pdf": len(pdf_list) > 0
                     }
                 )
-                logger.info("💾 Conversa salva na memória inteligente")
+                logger.info("Conversa salva na memoria inteligente")
             except Exception as e:
-                logger.warning(f"⚠️ Erro ao salvar na memória: {e}")
+                logger.warning(f"Erro ao salvar na memoria: {e}")
         
         return resposta
 
@@ -580,18 +618,18 @@ class AgentManager:
     def _responder_conjunta(self, pergunta, df, pdf_list, contexto_memoria=""):
         """Responde com dados conjuntos + memória"""
         try:
-            contexto = f"📊 Total registros: {len(df)}\n"
+            contexto = f"Total registros: {len(df)}\n"
             contexto += f"Amostra:\n{df.head(3).to_string()}\n\n"
 
             for i, vetorstore in enumerate(pdf_list):
                 resultados = vetorstore.similarity_search(pergunta, k=3)
                 if resultados:
-                    contexto += f"\n📄 PDF {i+1}:\n"
+                    contexto += f"\nPDF {i+1}:\n"
                     contexto += "\n".join([r.page_content for r in resultados])
             
             # Adiciona contexto da memória
             if contexto_memoria:
-                contexto += f"\n\n🧠 CONTEXTO DE CONVERSAS ANTERIORES:\n{contexto_memoria}"
+                contexto += f"\n\nCONTEXTO DE CONVERSAS ANTERIORES:\n{contexto_memoria}"
 
             return llm_resposta(pergunta, df=df, contexto_pdf=contexto)
         except Exception as e:
@@ -600,11 +638,11 @@ class AgentManager:
     def _responder_csv(self, pergunta, df, contexto_memoria=""):
         """Responde com dados CSV/XML + memória"""
         if df is None or df.empty:
-            return "❌ Nenhum dado tabular carregado."
+            return "Nenhum dado tabular carregado."
         
         # Se há contexto da memória, adiciona como "contexto_pdf" (workaround)
         if contexto_memoria:
-            contexto_extra = f"🧠 CONVERSAS ANTERIORES RELEVANTES:\n{contexto_memoria}"
+            contexto_extra = f"CONVERSAS ANTERIORES RELEVANTES:\n{contexto_memoria}"
             return llm_resposta(pergunta, df=df, contexto_pdf=contexto_extra)
         
         return llm_resposta(pergunta, df=df)
@@ -612,7 +650,7 @@ class AgentManager:
     def _responder_pdf(self, pergunta, pdf_list, contexto_memoria=""):
         """Responde com PDFs + memória"""
         if not pdf_list:
-            return "❌ Nenhum PDF carregado."
+            return "Nenhum PDF carregado."
         
         pergunta_lower = pergunta.lower()
         
@@ -622,7 +660,7 @@ class AgentManager:
         contexto = ""
         
         if eh_pergunta_produto:
-            logger.info("🔍 Detectada pergunta sobre produtos")
+            logger.info("Detectada pergunta sobre produtos")
             for vetorstore in pdf_list:
                 termos_busca = [
                     "DADOS DOS PRODUTOS SERVIÇOS",
@@ -644,7 +682,7 @@ class AgentManager:
         
         # Adiciona contexto da memória
         if contexto_memoria:
-            contexto += f"\n\n🧠 CONTEXTO DE CONVERSAS ANTERIORES:\n{contexto_memoria}"
+            contexto += f"\n\nCONTEXTO DE CONVERSAS ANTERIORES:\n{contexto_memoria}"
 
         return llm_resposta(pergunta, contexto_pdf=contexto)
 
@@ -658,13 +696,13 @@ class AgentManager:
         self.vetorstore_list = []
         self.arquivos_processados = set()
         
-        # ✨ LIMPA MEMÓRIA COMPARTILHADA (mas mantém memória inteligente persistente)
+        # LIMPA MEMÓRIA COMPARTILHADA (mas mantém memória inteligente persistente)
         if self.memoria_compartilhada:
             self.memoria_compartilhada.limpar()
         
-        logger.info("🧹 Todos os dados foram limpos (memória inteligente preservada)")
+        logger.info("Todos os dados foram limpos (memoria inteligente preservada)")
     
-    # ✨ NOVOS MÉTODOS PARA GERENCIAR MEMÓRIA
+    # NOVOS MÉTODOS PARA GERENCIAR MEMÓRIA
     
     def obter_estatisticas_memoria(self):
         """Retorna estatísticas da memória inteligente"""
@@ -675,11 +713,11 @@ class AgentManager:
     def obter_historico_conversas(self, ultimos_n=10):
         """Retorna histórico formatado das últimas conversas"""
         if not self.memoria_inteligente:
-            return "Memória inteligente não disponível"
+            return "Memoria inteligente nao disponivel"
         return self.memoria_inteligente.obter_historico_formatado(ultimos_n)
     
     def limpar_memoria_inteligente(self):
         """Limpa completamente a memória inteligente (inclusive disco)"""
         if self.memoria_inteligente:
             self.memoria_inteligente.limpar(limpar_disco=True)
-            logger.info("🗑️ Memória inteligente completamente limpa")
+            logger.info("Memoria inteligente completamente limpa")

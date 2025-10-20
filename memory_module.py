@@ -1,6 +1,6 @@
 # memory_module.py - VERSÃO COMPLETA COM MEMÓRIA INTELIGENTE
 """
-🧠 Módulo de Memória Inteligente do ChatFiscal
+ Módulo de Memória Inteligente do ChatFiscal
 
 Combina:
 - Memória Compartilhada (thread-safe)

@@ -160,3 +160,272 @@
 2025-10-19 22:20:19,673 - INFO - DEBUG: 21 explicações geradas
 2025-10-19 22:20:19,675 - INFO - DEBUG formatar: 21 explicações
 2025-10-19 22:20:19,677 - INFO - DEBUG: Adicionando explicações
+2025-10-19 23:22:12,856 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:22:12,856 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:22:16,685 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:22:16,686 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:22:16,783 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:22:16,784 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:22:19,201 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:22:19,201 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:22:19,647 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:22:19,649 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:23:04,868 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:23:04,869 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:23:08,134 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:23:08,135 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:23:10,989 - INFO - DEBUG: Iniciando Corujito
+2025-10-19 23:23:11,005 - INFO - DEBUG: Linhas vazias: 0
+2025-10-19 23:23:11,006 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-19 23:23:11,007 - INFO - DEBUG: 192 colunas com null
+2025-10-19 23:23:11,024 - INFO - DEBUG: 21 explicações geradas
+2025-10-19 23:23:11,025 - INFO - DEBUG formatar: 21 explicações
+2025-10-19 23:23:11,025 - INFO - DEBUG: Adicionando explicações
+2025-10-19 23:25:02,002 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:25:02,002 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:25:05,297 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:25:05,298 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:25:08,231 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:25:08,232 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:25:11,301 - INFO - DEBUG: Iniciando Corujito
+2025-10-19 23:25:11,314 - INFO - DEBUG: Linhas vazias: 0
+2025-10-19 23:25:11,315 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-19 23:25:11,316 - INFO - DEBUG: 192 colunas com null
+2025-10-19 23:25:11,321 - INFO - DEBUG: 21 explicações geradas
+2025-10-19 23:25:11,321 - INFO - DEBUG formatar: 21 explicações
+2025-10-19 23:25:11,322 - INFO - DEBUG: Adicionando explicações
+2025-10-19 23:27:23,050 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:27:23,052 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:27:26,525 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:27:26,526 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:27:29,261 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:27:29,261 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:27:31,918 - INFO - DEBUG: Iniciando Corujito
+2025-10-19 23:27:31,940 - INFO - DEBUG: Linhas vazias: 0
+2025-10-19 23:27:31,941 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-19 23:27:31,943 - INFO - DEBUG: 192 colunas com null
+2025-10-19 23:27:31,949 - INFO - DEBUG: 21 explicações geradas
+2025-10-19 23:27:31,949 - INFO - DEBUG formatar: 21 explicações
+2025-10-19 23:27:31,950 - INFO - DEBUG: Adicionando explicações
+2025-10-19 23:28:20,296 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:28:20,297 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:28:23,785 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:28:23,785 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:28:26,325 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:28:26,325 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:28:29,083 - INFO - DEBUG: Iniciando Corujito
+2025-10-19 23:28:29,103 - INFO - DEBUG: Linhas vazias: 0
+2025-10-19 23:28:29,104 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-19 23:28:29,105 - INFO - DEBUG: 192 colunas com null
+2025-10-19 23:28:29,108 - INFO - DEBUG: 21 explicações geradas
+2025-10-19 23:28:29,109 - INFO - DEBUG formatar: 21 explicações
+2025-10-19 23:28:29,109 - INFO - DEBUG: Adicionando explicações
+2025-10-19 23:28:40,297 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:28:40,297 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:28:43,391 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:28:43,391 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:28:46,446 - INFO - DEBUG: Iniciando Corujito
+2025-10-19 23:28:46,463 - INFO - DEBUG: Linhas vazias: 0
+2025-10-19 23:28:46,464 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-19 23:28:46,464 - INFO - DEBUG: 192 colunas com null
+2025-10-19 23:28:46,467 - INFO - DEBUG: 21 explicações geradas
+2025-10-19 23:28:46,467 - INFO - DEBUG formatar: 21 explicações
+2025-10-19 23:28:46,467 - INFO - DEBUG: Adicionando explicações
+2025-10-19 23:28:50,800 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:28:50,800 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:28:54,425 - INFO - Use pytorch device_name: cpu
+2025-10-19 23:28:54,425 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-19 23:28:57,600 - INFO - DEBUG: Iniciando Corujito
+2025-10-19 23:28:57,628 - INFO - DEBUG: Linhas vazias: 0
+2025-10-19 23:28:57,629 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-19 23:28:57,631 - INFO - DEBUG: 192 colunas com null
+2025-10-19 23:28:57,636 - INFO - DEBUG: 21 explicações geradas
+2025-10-19 23:28:57,636 - INFO - DEBUG formatar: 21 explicações
+2025-10-19 23:28:57,637 - INFO - DEBUG: Adicionando explicações
+2025-10-20 07:22:23,496 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:22:23,496 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:22:30,109 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:22:30,110 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:22:32,907 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:22:32,914 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:22:58,544 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:22:58,544 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:23:02,800 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:23:02,800 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:23:06,315 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:23:06,315 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:23:09,182 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:23:09,182 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:23:33,271 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:23:33,274 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:23:38,499 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:23:38,499 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:23:49,603 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:23:49,611 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:23:54,599 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:23:54,599 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:23:58,602 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:23:58,602 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:24:02,175 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:24:02,179 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:24:12,518 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:24:12,518 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:24:12,726 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:24:12,728 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:24:12,904 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:24:12,904 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:24:18,078 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:24:18,078 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:24:31,450 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:24:31,452 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:25:49,626 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:25:49,626 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:25:53,813 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:25:53,813 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:25:57,418 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:25:57,418 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:51:45,005 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:51:45,008 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:51:50,377 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:51:53,300 - INFO - Embeddings carregados com sucesso
+2025-10-20 07:51:53,309 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:51:53,311 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:51:56,297 - INFO - Memoria Inteligente inicializada
+2025-10-20 07:51:56,298 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 07:53:49,286 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:53:49,286 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:53:54,425 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:53:57,380 - INFO - Embeddings carregados com sucesso
+2025-10-20 07:53:57,392 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:53:57,392 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:54:00,983 - INFO - Memoria Inteligente inicializada
+2025-10-20 07:54:00,986 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 07:55:12,614 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:55:12,616 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:55:20,237 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:55:23,136 - INFO - Embeddings carregados com sucesso
+2025-10-20 07:55:23,140 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:55:23,140 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:55:26,617 - INFO - Memoria Inteligente inicializada
+2025-10-20 07:55:26,617 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 07:56:13,559 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:56:13,560 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:56:18,881 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:56:23,237 - INFO - Embeddings carregados com sucesso
+2025-10-20 07:56:23,258 - INFO - Use pytorch device_name: cpu
+2025-10-20 07:56:23,258 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 07:56:26,235 - INFO - Memoria Inteligente inicializada
+2025-10-20 07:56:26,235 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 08:00:17,761 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:00:17,782 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:00:21,542 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:00:24,430 - INFO - Embeddings carregados com sucesso
+2025-10-20 08:00:24,441 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:00:24,441 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:00:27,378 - INFO - Memoria Inteligente inicializada
+2025-10-20 08:00:27,378 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 08:00:34,185 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:00:38,347 - INFO - Embeddings carregados com sucesso
+2025-10-20 08:00:38,360 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:00:38,360 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:00:41,368 - INFO - Memoria Inteligente inicializada
+2025-10-20 08:00:41,368 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 08:00:41,390 - INFO - Carregando arquivo: anexo2.xml
+2025-10-20 08:00:41,529 - INFO - 'anexo2.xml' adicionado com 1 linhas. Total: 1 linhas unicas
+2025-10-20 08:00:41,529 - INFO - Carregando arquivo: nf-42251028381938000118550010000117831000283083 (1).xml
+2025-10-20 08:00:41,655 - INFO - 'nf-42251028381938000118550010000117831000283083 (1).xml' adicionado com 1 linhas. Total: 2 linhas unicas
+2025-10-20 08:00:41,900 - INFO - DEBUG: Iniciando Corujito
+2025-10-20 08:00:41,970 - INFO - DEBUG: Linhas vazias: 0
+2025-10-20 08:00:41,972 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-20 08:00:41,976 - INFO - DEBUG: 192 colunas com null
+2025-10-20 08:00:41,991 - INFO - DEBUG: 21 explicações geradas
+2025-10-20 08:00:41,995 - INFO - DEBUG formatar: 21 explicações
+2025-10-20 08:00:41,996 - INFO - DEBUG: Adicionando explicações
+2025-10-20 08:06:37,928 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:06:37,930 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:06:45,062 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:06:48,762 - INFO - Embeddings carregados com sucesso
+2025-10-20 08:06:48,772 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:06:48,772 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:06:51,769 - INFO - Memoria Inteligente inicializada
+2025-10-20 08:06:51,770 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 08:06:51,790 - INFO - Carregando arquivo: anexo2.xml
+2025-10-20 08:06:51,854 - INFO - 'anexo2.xml' adicionado com 1 linhas. Total: 1 linhas unicas
+2025-10-20 08:06:51,857 - INFO - Carregando arquivo: nf-42251028381938000118550010000117831000283083 (1).xml
+2025-10-20 08:06:51,990 - INFO - 'nf-42251028381938000118550010000117831000283083 (1).xml' adicionado com 1 linhas. Total: 2 linhas unicas
+2025-10-20 08:06:52,137 - INFO - DEBUG: Iniciando Corujito
+2025-10-20 08:06:52,203 - INFO - DEBUG: Linhas vazias: 0
+2025-10-20 08:06:52,203 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-20 08:06:52,212 - INFO - DEBUG: 192 colunas com null
+2025-10-20 08:06:52,237 - INFO - DEBUG: 21 explicações geradas
+2025-10-20 08:06:52,239 - INFO - DEBUG formatar: 21 explicações
+2025-10-20 08:06:52,240 - INFO - DEBUG: Adicionando explicações
+2025-10-20 08:09:40,443 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:09:44,760 - INFO - Embeddings carregados com sucesso
+2025-10-20 08:09:44,772 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:09:44,773 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:09:48,644 - INFO - Memoria Inteligente inicializada
+2025-10-20 08:09:48,644 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 08:10:16,629 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:10:16,630 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:10:22,116 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:10:24,755 - INFO - Embeddings carregados com sucesso
+2025-10-20 08:10:24,758 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:10:24,759 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:10:27,446 - INFO - Memoria Inteligente inicializada
+2025-10-20 08:10:27,448 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 08:10:36,316 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:10:39,724 - INFO - Embeddings carregados com sucesso
+2025-10-20 08:10:39,727 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:10:39,727 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:10:42,729 - INFO - Memoria Inteligente inicializada
+2025-10-20 08:10:42,732 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 08:10:42,747 - INFO - Carregando arquivo: anexo2.xml
+2025-10-20 08:10:42,789 - INFO - 'anexo2.xml' adicionado com 1 linhas. Total: 1 linhas unicas
+2025-10-20 08:10:42,800 - INFO - Carregando arquivo: nf-42251028381938000118550010000117831000283083 (1).xml
+2025-10-20 08:10:42,931 - INFO - 'nf-42251028381938000118550010000117831000283083 (1).xml' adicionado com 1 linhas. Total: 2 linhas unicas
+2025-10-20 08:10:43,030 - INFO - DEBUG: Iniciando Corujito
+2025-10-20 08:10:43,066 - INFO - DEBUG: Linhas vazias: 0
+2025-10-20 08:10:43,068 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-20 08:10:43,071 - INFO - DEBUG: 192 colunas com null
+2025-10-20 08:10:43,081 - INFO - DEBUG: 21 explicações geradas
+2025-10-20 08:10:43,085 - INFO - DEBUG formatar: 21 explicações
+2025-10-20 08:10:43,086 - INFO - DEBUG: Adicionando explicações
+2025-10-20 08:12:37,413 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:12:40,769 - INFO - Embeddings carregados com sucesso
+2025-10-20 08:12:40,777 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:12:40,777 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:12:43,560 - INFO - Memoria Inteligente inicializada
+2025-10-20 08:12:43,560 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 08:12:43,569 - INFO - Carregando arquivo: anexo2.xml
+2025-10-20 08:12:43,599 - INFO - 'anexo2.xml' adicionado com 1 linhas. Total: 1 linhas unicas
+2025-10-20 08:12:43,600 - INFO - Carregando arquivo: nf-42251028381938000118550010000117831000283083 (1).xml
+2025-10-20 08:12:43,654 - INFO - 'nf-42251028381938000118550010000117831000283083 (1).xml' adicionado com 1 linhas. Total: 2 linhas unicas
+2025-10-20 08:12:43,698 - INFO - DEBUG: Iniciando Corujito
+2025-10-20 08:12:43,720 - INFO - DEBUG: Linhas vazias: 0
+2025-10-20 08:12:43,722 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-20 08:12:43,723 - INFO - DEBUG: 192 colunas com null
+2025-10-20 08:12:43,729 - INFO - DEBUG: 21 explicações geradas
+2025-10-20 08:12:43,730 - INFO - DEBUG formatar: 21 explicações
+2025-10-20 08:12:43,730 - INFO - DEBUG: Adicionando explicações
+2025-10-20 08:12:46,918 - INFO - Pergunta: bom dia
+2025-10-20 08:12:47,044 - INFO - Conversa salva na memoria inteligente
+2025-10-20 08:12:47,313 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:12:49,900 - INFO - Embeddings carregados com sucesso
+2025-10-20 08:12:49,904 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:12:49,905 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-10-20 08:12:52,593 - INFO - Memoria Inteligente inicializada
+2025-10-20 08:12:52,594 - INFO - AgentManager inicializado com memoria inteligente
+2025-10-20 08:12:52,603 - INFO - Carregando arquivo: anexo2.xml
+2025-10-20 08:12:52,625 - INFO - 'anexo2.xml' adicionado com 1 linhas. Total: 1 linhas unicas
+2025-10-20 08:12:52,629 - INFO - Carregando arquivo: nf-42251028381938000118550010000117831000283083 (1).xml
+2025-10-20 08:12:52,671 - INFO - 'nf-42251028381938000118550010000117831000283083 (1).xml' adicionado com 1 linhas. Total: 2 linhas unicas
+2025-10-20 08:12:52,730 - INFO - DEBUG: Iniciando Corujito
+2025-10-20 08:12:52,759 - INFO - DEBUG: Linhas vazias: 0
+2025-10-20 08:12:52,760 - INFO - DEBUG: Tipo: MISTO (NFe + NFSe)
+2025-10-20 08:12:52,762 - INFO - DEBUG: 192 colunas com null
+2025-10-20 08:12:52,770 - INFO - DEBUG: 21 explicações geradas
+2025-10-20 08:12:52,771 - INFO - DEBUG formatar: 21 explicações
+2025-10-20 08:12:52,771 - INFO - DEBUG: Adicionando explicações
+2025-10-20 08:19:31,022 - INFO - Use pytorch device_name: cpu
+2025-10-20 08:19:31,023 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2

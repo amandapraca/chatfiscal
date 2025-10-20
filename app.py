@@ -375,9 +375,11 @@ with abas[1]:
 # ABA 2: AUDITORIA FISCAL
 # ═══════════════════════════════════════════════════════════════
 with abas[2]:
-    st.subheader("Auditoria Fiscal")
+    st.subheader("📋 Auditoria Fiscal")
     
+    # Função auxiliar para detectar tipo de NF
     def detectar_tipo_nf(df):
+        """Detecta se é NFe, NFSe ou Misto"""
         if df is None or df.empty:
             return "Não especificado"
         
@@ -387,120 +389,236 @@ with abas[2]:
         if tem_nfe and tem_nfse:
             return "MISTO (NFe + NFSe)"
         elif tem_nfe:
-            return "NF-e"
+            return "NF-e (Nota Fiscal Eletrônica)"
         elif tem_nfse:
-            return "NFS-e"
+            return "NFS-e (Nota Fiscal de Serviço)"
         else:
             return "Não especificado"
     
+    # Métricas principais
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.metric("Arquivos", len(st.session_state.get("arquivos_carregados", set())))
+        total_arquivos = len(st.session_state.get("arquivos_carregados", set()))
+        st.metric("📁 Arquivos Processados", total_arquivos)
     
     with col2:
-        total = 0
+        total_registros = 0
         if st.session_state.get("dados_tabulares"):
-            df_temp = pd.concat(st.session_state["dados_tabulares"], ignore_index=True)
-            total = len(df_temp)
-        st.metric("Registros", total)
+            df_unificado = pd.concat(st.session_state["dados_tabulares"], ignore_index=True)
+            total_registros = len(df_unificado)
+        st.metric("📊 Registros Fiscais", total_registros)
     
     with col3:
-        st.metric("Consultas", len(st.session_state.get("past", [])))
+        total_perguntas = len(st.session_state.get("past", []))
+        st.metric("💬 Consultas Realizadas", total_perguntas)
     
     with col4:
-        st.metric("PDFs", len(st.session_state.get("pdf_list", [])))
+        total_pdfs = len(st.session_state.get("pdf_list", []))
+        st.metric("📄 Documentos PDF", total_pdfs)
     
     st.markdown("---")
-    st.subheader("Trilha de Auditoria")
     
-    if st.session_state.get("past"):
-        with st.expander("Histórico de Consultas da Sessão", expanded=True):
-            for i in range(len(st.session_state["past"])):
-                st.markdown(f"**{i+1}. {st.session_state['past'][i]}**")
-                with st.expander("Ver resposta"):
-                    st.write(st.session_state["generated"][i])
+    # Trilha de Auditoria - Histórico de Ações
+    st.subheader("🔍 Trilha de Auditoria")
+    
+    if st.session_state.get("historico"):
+        with st.expander("📜 Histórico de Consultas", expanded=True):
+            for i, (pergunta, resposta) in enumerate(st.session_state["historico"], 1):
+                st.markdown(f"""
+                **{i}. Consulta realizada:**
+                - **Pergunta:** {pergunta}
+                - **Data/Hora:** {datetime.now().strftime("%d/%m/%Y %H:%M")}
+                - **Tipo:** Análise Fiscal Eletrônica
+                """)
+                with st.expander(f"Ver resposta completa"):
+                    st.write(resposta)
+                st.markdown("---")
     else:
-        st.info("Nenhuma consulta nesta sessão")
+        st.info("📭 Nenhuma consulta realizada ainda")
     
     st.markdown("---")
-    st.subheader("Arquivos Processados")
+    
+    # Arquivos Processados
+    st.subheader("📁 Arquivos Processados")
     
     if st.session_state.get("arquivos_carregados"):
         df_arquivos = pd.DataFrame({
             "Arquivo": list(st.session_state["arquivos_carregados"]),
             "Tipo": [nome.split(".")[-1].upper() for nome in st.session_state["arquivos_carregados"]],
-            "Status": ["Processado"] * len(st.session_state["arquivos_carregados"])
+            "Status": ["✅ Processado"] * len(st.session_state["arquivos_carregados"])
         })
         st.dataframe(df_arquivos, use_container_width=True)
     else:
-        st.info("Nenhum arquivo carregado")
+        st.info("📭 Nenhum arquivo carregado")
     
     st.markdown("---")
     
+    # Análise de Qualidade dos Dados (COM EXPLICAÇÃO E TIPO DE NF)
     if st.session_state.get("dados_tabulares"):
-        st.subheader("Análise de Qualidade")
+        st.subheader("📊 Resumo da Análise de Qualidade")
         
-        df_temp = pd.concat(st.session_state["dados_tabulares"], ignore_index=True)
-        tipo_nf = detectar_tipo_nf(df_temp)
+        df_unificado = pd.concat(st.session_state["dados_tabulares"], ignore_index=True)
+        
+        # Detecta tipo de NF
+        tipo_nf = detectar_tipo_nf(df_unificado)
+        
+        # Badge do tipo de NF
+        if "MISTO" in tipo_nf:
+            cor_badge = "🟡"
+        elif "NF-e" in tipo_nf:
+            cor_badge = "🔵"
+        elif "NFS-e" in tipo_nf:
+            cor_badge = "🟣"
+        else:
+            cor_badge = "⚪"
+        
+        st.markdown(f"### {cor_badge} **Tipo de Documento:** {tipo_nf}")
+        st.markdown("---")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.metric("Campos", len(df_temp.columns))
-            st.metric("Registros", len(df_temp))
-            st.metric("Duplicados", df_temp.duplicated().sum())
+            st.metric("Total de Campos", len(df_unificado.columns))
+            st.metric("Total de Registros", len(df_unificado))
+            st.metric("Registros Duplicados", df_unificado.duplicated().sum())
         
         with col2:
-            total_celulas = len(df_temp) * len(df_temp.columns)
-            campos_vazios = df_temp.isnull().sum().sum()
+            # Calcula campos vazios
+            total_celulas = len(df_unificado) * len(df_unificado.columns)
+            campos_vazios = df_unificado.isnull().sum().sum()
+            
+            st.metric("Campos Vazios (Total)", f"{campos_vazios:,}")
+            
+            # Completude CORRETA
             completude = ((total_celulas - campos_vazios) / total_celulas * 100) if total_celulas > 0 else 0
             
-            st.metric("Vazios", f"{campos_vazios:,}")
-            st.metric("Completude", f"{completude:.1f}%")
+            # Adiciona indicador de qualidade
+            if completude >= 80:
+                emoji = "🟢"
+                status = "Excelente"
+            elif completude >= 60:
+                emoji = "🟡"
+                status = "Bom"
+            elif completude >= 40:
+                emoji = "🟠"
+                status = "Moderado"
+            else:
+                emoji = "🔴"
+                status = "Crítico"
+            
+            st.metric("Completude dos Dados", f"{emoji} {completude:.1f}%", delta=status)
+        
+        # EXPLICAÇÃO CONTEXTUAL
+        st.markdown("---")
+        
+        if "MISTO" in tipo_nf:
+            st.info(f"""
+            ℹ️ **Explicação - Dados MISTO (NFe + NFSe):**
+            
+            A completude de **{completude:.1f}%** é **esperada** para dados consolidados de tipos diferentes:
+            
+            - **NF-e** possui campos específicos (Emitente, Destinatário, CFOP, ICMS, etc.)
+            - **NFS-e** possui campos específicos (Prestador, Tomador, ISS, etc.)
+            - Quando consolidados, os campos exclusivos de cada tipo **ficam vazios naturalmente**
+            
+            **Exemplo prático:**
+            - Registro NF-e: campos `prestador_*` ficam vazios (não se aplicam)
+            - Registro NFS-e: campos `emit_*`, `cfop`, `icms` ficam vazios (não se aplicam)
+            
+            ✅ **Isso NÃO indica problema de qualidade**, apenas estruturas diferentes!
+            """)
+        elif completude < 80:
+            st.warning(f"""
+            ⚠️ **Atenção - Completude abaixo de 80%:**
+            
+            Campos vazios detectados: **{campos_vazios:,}** de {total_celulas:,} células
+            
+            **Recomendações:**
+            - Verifique se os XMLs estão completos
+            - Confirme se campos obrigatórios estão preenchidos
+            - Considere validar na origem (sistema emissor)
+            """)
+        else:
+            st.success(f"""
+            ✅ **Qualidade Excelente!**
+            
+            Completude de **{completude:.1f}%** indica dados bem estruturados e completos.
+            """)
+        
+        # Detalhamento por tipo (se for MISTO)
+        if "MISTO" in tipo_nf:
+            st.markdown("---")
+            st.subheader("📋 Detalhamento por Tipo de Documento")
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                # Conta registros de NFe (tem campos emit_ ou cfop)
+                registros_nfe = df_unificado[df_unificado.apply(lambda row: any(pd.notna(row[col]) for col in df_unificado.columns if 'emit_' in col or col == 'cfop'), axis=1)]
+                st.metric("🔵 Registros NF-e", len(registros_nfe) if not registros_nfe.empty else 0)
+            
+            with col2:
+                # Conta registros de NFSe (tem campos prestador_)
+                registros_nfse = df_unificado[df_unificado.apply(lambda row: any(pd.notna(row[col]) for col in df_unificado.columns if 'prestador_' in col), axis=1)]
+                st.metric("🟣 Registros NFS-e", len(registros_nfse) if not registros_nfse.empty else 0)
     
     st.markdown("---")
-    st.subheader("Exportar Relatório")
+
+    # Exportação de Relatório
+    st.subheader("📥 Exportar Relatório de Auditoria")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("Gerar PDF", use_container_width=True):
-            if st.session_state.get("dados_tabulares"):
-                try:
-                    with st.spinner("Gerando relatório..."):
-                        dados = {
-                            "dados_tabulares": st.session_state.get("dados_tabulares", []),
-                            "arquivos_carregados": st.session_state.get("arquivos_carregados", set()),
-                            "past": st.session_state.get("past", []),
-                            "pdf_list": st.session_state.get("pdf_list", []),
-                        }
-                        
-                        pdf_bytes = gerar_relatorio_pdf(dados)
-                        
-                        st.download_button(
-                            label="Download PDF",
-                            data=pdf_bytes,
-                            file_name=f"relatorio_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
-                            mime="application/pdf",
-                            use_container_width=True
-                        )
-                        st.success("PDF gerado!")
-                except Exception as e:
-                    st.error(f"Erro: {e}")
+     if st.button("📄 Gerar Relatório PDF", use_container_width=True):
+        if st.session_state.get("dados_tabulares"):
+            try:
+                with st.spinner("Gerando relatório PDF..."):
+                    # Prepara dados da sessão
+                    dados = {
+                        "dados_tabulares": st.session_state.get("dados_tabulares", []),
+                        "arquivos_carregados": st.session_state.get("arquivos_carregados", set()),
+                        "past": st.session_state.get("past", []),
+                        "pdf_list": st.session_state.get("pdf_list", []),
+                    }
+                    
+                    # Gera PDF usando o módulo externo
+                    pdf_bytes = gerar_relatorio_pdf(dados)
+                    
+                    # Botão de download
+                    st.download_button(
+                        label="⬇️ Download Relatório PDF",
+                        data=pdf_bytes,
+                        file_name=f"relatorio_auditoria_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+                        mime="application/pdf",
+                        use_container_width=True
+                    )
+                    
+                    st.success("✅ Relatório PDF gerado com sucesso!")
+                
+            except Exception as e:
+                st.error(f"❌ Erro ao gerar PDF: {str(e)}")
+                logger.error(f"Erro ao gerar PDF: {e}")
+        else:
+            st.warning("⚠️ Nenhum dado disponível para gerar relatório")
+
     
     with col2:
-        if st.button("Exportar CSV", use_container_width=True):
+        if st.button("📊 Exportar para CSV", use_container_width=True):
             if st.session_state.get("dados_tabulares"):
                 df_export = pd.concat(st.session_state["dados_tabulares"], ignore_index=True)
-                csv = df_export.to_csv(index=False, encoding='utf-8')
+                csv = df_export.to_csv(index=False)
                 st.download_button(
-                    label="Download CSV",
+                    label="⬇️ Download CSV",
                     data=csv,
-                    file_name=f"dados_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-                    mime="text/csv",
-                    use_container_width=True
+                    file_name=f"auditoria_fiscal_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                    mime="text/csv"
                 )
+            else:
+                st.warning("⚠️ Nenhum dado disponível para exportar")
+
+
 
 # ═══════════════════════════════════════════════════════════════
 # ABA 3: MEMÓRIA INTELIGENTE

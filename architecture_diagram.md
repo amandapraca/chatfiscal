@@ -57,3 +57,4 @@ graph TD
 ---
 
 Este diagrama e descrição ajudam a entender como os componentes do ChatFiscal interagem para fornecer uma experiência integrada ao usuário.
+
